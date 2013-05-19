@@ -15,6 +15,7 @@ import java.util.Hashtable;
 
 @Path("/hello-rest")
 @Component(immediate = true)
+
 public class HelloWorldRestImpl {
 
     @Reference
@@ -33,21 +34,14 @@ public class HelloWorldRestImpl {
 
     @GET
     public String sayHello() {
-        return "hello fool";
+        System.out.println("Inside HelloWorldServiceImpl.sayHello");
+        return "hello fool 3";
     }
 
     public void setHttpService(HttpService httpService, String classNames) throws Exception {
-        Hashtable<String, String> initParams =
-                new Hashtable<String, String>();
-
-        //initParams.put(
-        //        "com.sun.ws.rest.config.property.resourceConfigClass",
-        //        "com.factset.im.examples.hellorestimpl.OSGiResourceConfig");
-
+        Hashtable<String, String> initParams = new Hashtable<String, String>();
         initParams.put("javax.ws.rs.Application", HelloWorldRestApplication.class.getName());
-
         Servlet jerseyServlet = new ServletContainer();
-        httpService.registerServlet("/teo",
-                jerseyServlet, initParams, null);
+        httpService.registerServlet("/teo", jerseyServlet, initParams, null);
     }
 }

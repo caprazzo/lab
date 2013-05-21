@@ -10,34 +10,34 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import java.util.HashMap;
 
+//@Component(name = "HelloWorldRestImplXXX", architecture = true)
+//@Instantiate(name = "HelloWorldRestImplInstanceXXX")
 @Path("/hello-rest")
-//@Component(name = "HelloWorldRestImpl", architecture = true)
-//@Instantiate(name = "HelloWorldRestImplInstance")
 public class HelloWorldRestImpl {
 
     public HelloWorldRestImpl() {
-        System.out.println("constructor of HelloWorldRestImpl");
+        System.out.println("constructor of HelloWorldRestImpl (annots)");
     }
 
     //@Requires
-    private HttpService httpService = null;
+    private HttpService httpService;
 
-    private String m_name;
+    //private String m_name;
 
-    @Requires
+    //@Requires
     private HelloWorldService helloService;
 
     @Validate
-    public void starting() {
+    public void starting() throws Exception {
         System.out.println("HelloWorldServiceImplActivator Start with httpService " + httpService + " and helloService " + helloService);
         ServletContainer jerseyServlet = new ServletContainer(new HelloWorldRestApplication(this));
-        //httpService.registerServlet("/teo", jerseyServlet, null, null);
+        httpService.registerServlet("/teo", jerseyServlet, null, null);
     }
 
     @Invalidate
     public void stopping() {
         System.out.println("HelloWorldRestImplActivator Stop with impl " );
-        //httpService.unregister("/teo");
+        httpService.unregister("/teo");
     }
 
     @Updated

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iPOJO>
+<component className="com.factset.im.examples.hellorestimpl.HelloWorldRestImpl" architecture="true">
+    <requires field="helloService" />
+    <requires field="httpService" />
+    <callback transition="validate" method="starting" />
+    <callback transition="invalidate" method="stopping" />
+</component>
+<instance component="com.factset.im.examples.hellorestimpl.HelloWorldRestImpl">
+</instance>
+</iPOJO>

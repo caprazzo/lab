@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iPOJO>
+    <instance component="com.factset.im.examples.helloimpl.HelloWorldServiceImpl" name="HelloWorldServiceImpl1" />
+</iPOJO>

@@ -11,10 +11,11 @@ public class HelloWorldRestApplication extends Application {
     }
 
     @Override
-    public Set<Class<?>> getClasses() {
-        System.out.println("getClasses() of " + getClass().getName());
-        HashSet<Class<?>> set = new HashSet<Class<?>>(super.getClasses());
-        set.add(HelloWorldRestImpl.class);
+    public Set<Object> getSingletons() {
+        System.out.println("getSingletons() of " + getClass().getName());
+        HashSet<Object> set = new HashSet<Object>(super.getSingletons());
+        set.add(new HelloWorldRestImpl());
         return set;
     }
+
 }

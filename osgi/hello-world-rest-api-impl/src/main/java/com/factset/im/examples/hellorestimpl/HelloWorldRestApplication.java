@@ -6,7 +6,10 @@ import java.util.Set;
 
 public class HelloWorldRestApplication extends Application {
 
-    public HelloWorldRestApplication() {
+    private final HelloWorldRestImpl helloWorldRest;
+
+    public HelloWorldRestApplication(HelloWorldRestImpl helloWorldRest) {
+        this.helloWorldRest = helloWorldRest;
         System.out.println("constructor() of " + getClass().getName());
     }
 
@@ -14,7 +17,7 @@ public class HelloWorldRestApplication extends Application {
     public Set<Object> getSingletons() {
         System.out.println("getSingletons() of " + getClass().getName());
         HashSet<Object> set = new HashSet<Object>(super.getSingletons());
-        set.add(new HelloWorldRestImpl());
+        set.add(helloWorldRest);
         return set;
     }
 

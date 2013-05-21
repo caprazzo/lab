@@ -7,6 +7,7 @@
         <groupId>osgi</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>hello-world-impl</artifactId>
@@ -35,6 +36,11 @@
                 <artifactId>maven-bundle-plugin</artifactId>
                 <version>2.3.7</version>
                 <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Import-Package>com.factset.im.examples.hello.api; org.osgi.service.component;</Import-Package>
+                    </instructions>
+                </configuration>
                 <!--
                 <configuration>
                     <instructions>

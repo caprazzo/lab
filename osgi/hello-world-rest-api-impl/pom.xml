@@ -43,7 +43,7 @@
                     <instructions>
                         <Export-Package>com.factset.im.examples.hellorestimpl</Export-Package>
                         <Private-Package>com.factset.im.examples.hellorestimpl</Private-Package>
-                        <Import-Package>org.osgi.framework; com.sun.jersey.spi.container.servlet; javax.servlet; javax.ws.rs; javax.ws.rs.core; org.osgi.service.component; org.osgi.service.http</Import-Package>
+                        <Import-Package>com.factset.im.examples.hello.api; org.osgi.framework; com.sun.jersey.spi.container.servlet; javax.servlet; javax.ws.rs; javax.ws.rs.core; org.osgi.service.component; org.osgi.service.http</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>

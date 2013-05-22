@@ -41,7 +41,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>com.factset.im.examples.hello.api</Export-Package>
+                        <Export-Package>net.caprazzi.osgi.examples.hello.api</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>

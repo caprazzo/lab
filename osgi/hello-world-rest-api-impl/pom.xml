@@ -41,8 +41,10 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Private-Package>com.factset.im.examples.hellorestimpl</Private-Package>
-                        <Import-Package>com.factset.im.examples.hello.api; org.osgi.framework; com.sun.jersey.spi.container.servlet; javax.ws.rs; javax.ws.rs.core; org.osgi.service.component; org.osgi.service.http</Import-Package>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Private-Package>net.caprazzi.osgi.examples.hellorestimpl</Private-Package>
+                        <Export-Package>net.caprazzi.osgi.examples.hellorestimpl</Export-Package>
+                        <Import-Package>net.caprazzi.osgi.examples.hello.api; com.sun.jersey.spi.container.servlet; javax.ws.rs; javax.ws.rs.core; org.osgi.service.http; javax.servlet</Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
@@ -55,6 +57,9 @@
                         <goals>
                             <goal>ipojo-bundle</goal>
                         </goals>
+                        <configuration>
+                            <ignoreAnnotations>false</ignoreAnnotations>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

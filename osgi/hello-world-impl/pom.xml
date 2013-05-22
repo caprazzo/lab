@@ -38,7 +38,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>com.factset.im.examples.hello.api; org.osgi.service.component;</Import-Package>
+                        <Import-Package>net.caprazzi.osgi.examples.hello.api; org.osgi.service.component;</Import-Package>
                     </instructions>
                 </configuration>
                 <!--

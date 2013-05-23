@@ -1,5 +1,6 @@
 package net.caprazzi.xmpp.component;
 
+import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
 import org.xmpp.component.Component;
 import org.xmpp.packet.Message;
@@ -23,6 +24,7 @@ public class BotExecutor {
         Futures.addCallback(response, new FutureCallback<BotResponse>() {
             @Override
             public void onSuccess(BotResponse response) {
+                Preconditions.checkNotNull(response, "Bot handlers can't return null");
                 if (response.getPacket().isPresent()) {
                      responder.respond(new ComponentResponse(component, response.getPacket().get()));
                 }
@@ -30,7 +32,7 @@ public class BotExecutor {
 
             @Override
             public void onFailure(Throwable throwable) {
-                //To change body of implemented methods use File | Settings | File Templates.
+                throwable.printStackTrace();
             }
         });
     }

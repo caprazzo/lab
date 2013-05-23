@@ -11,12 +11,16 @@ public class EchoBotComponentManager extends AbstractBotManager {
 
     @Override
     protected void initialize(BotServiceManager botService) {
-        botService.addDomain("myDomain", "secret");
+        botService.addDomain("foo", "secret");
         botService.addBot(new Bot() {
             @Override
             public BotResponse handleMessage(Message message) {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+                Message reply = new Message();
+                reply.setTo(message.getFrom());
+                reply.setFrom(message.getTo());
+                reply.setBody("You said: " + message.getBody());
+                return BotResponses.from(reply);
             }
-        }, "myDomain", NodeFilters.singleNode("echo"));
+        }, "foo", NodeFilters.singleNode("echo"));
     }
 }

@@ -1,13 +1,18 @@
 package net.caprazzi.xmpp.component;
 
+import com.google.common.base.Strings;
 import net.caprazzi.xmpp.component.utils.AbstractInterceptComponent;
 import org.jivesoftware.whack.ExternalComponentManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xmpp.component.ComponentException;
 import org.xmpp.packet.Packet;
 
 import java.util.concurrent.Executors;
 
 public class BotServiceManager implements BotService {
+
+    private final Logger Log = LoggerFactory.getLogger(BotServiceManager.class);
 
     private final ExternalComponentManager componentManager;
     private final PacketRouter router;
@@ -22,16 +27,19 @@ public class BotServiceManager implements BotService {
 
     @Override
     public synchronized void addBot(Bot bot, String subdomain, NodeFilter nodeFilter) {
+        Log.info("Adding bot {} to subdomain {} using node filter " + nodeFilter, bot, subdomain);
         router.addBot(bot, subdomain, nodeFilter);
     }
 
     @Override
     public synchronized void removeBot(Bot bot, String subdomain) {
+        Log.info("Removing bot {} from subdomain {}", bot, subdomain);
         router.removeBot(bot, subdomain);
     }
 
     @Override
     public synchronized void addDomain(final String subdomain, String password) {
+        Log.info("Configuring domain {} with secret [{}]", subdomain, !Strings.isNullOrEmpty(password));
         // TODO: make sure the domain does not already exist
         // TODO: make sure the password is not null or empty
         componentManager.setSecretKey(subdomain, password);
@@ -43,12 +51,25 @@ public class BotServiceManager implements BotService {
                 }
             });
         } catch (ComponentException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
     @Override
     public synchronized void removeDomain(String subdomain) throws ComponentException {
+        Log.info("Removing domain {}", subdomain);
         componentManager.removeComponent(subdomain);
+    }
+
+    @Override
+    public void shutdown() {
+        for(String domain : router.getDomains()) {
+            try {
+                removeDomain(domain);
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }

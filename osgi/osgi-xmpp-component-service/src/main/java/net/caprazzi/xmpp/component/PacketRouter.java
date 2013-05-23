@@ -5,6 +5,7 @@ import org.xmpp.component.Component;
 import org.xmpp.packet.Packet;
 
 import java.util.Map;
+import java.util.Set;
 
 public class PacketRouter {
 
@@ -32,4 +33,7 @@ public class PacketRouter {
     }
 
 
+    public synchronized Set<String> getDomains() {
+        return table.columnKeySet();
+    }
 }

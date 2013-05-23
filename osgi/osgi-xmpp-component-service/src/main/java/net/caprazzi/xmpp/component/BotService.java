@@ -8,4 +8,6 @@ public interface BotService {
     public void removeBot(Bot bot, String subdomain);
     public void addDomain(String domain, String secret) throws ComponentException;
     public void removeDomain(String domain) throws ComponentException;
+
+    void shutdown();
 }

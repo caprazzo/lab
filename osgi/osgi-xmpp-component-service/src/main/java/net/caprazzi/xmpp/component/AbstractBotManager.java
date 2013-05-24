@@ -14,15 +14,20 @@ public abstract class AbstractBotManager {
 
     protected final void run(String args[]) {
         Log.info("Starting with args " + args.length);
-        // parse basic options from yml
+
+        // TODO: parse basic options from yml (see https://github.com/codahale/dropwizard/tree/master/dropwizard-configuration)
+        // TODO: don't start botservice until after initialization is completed
+
         final ExternalComponentManager manager = new ExternalComponentManager("localhost", 5275);
         final BotServiceManager botService = new BotServiceManager(manager);
+
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run()  {
                 Log.info("Shutting down");
                 botService.shutdown();
             }
         });
+
         initialize(botService);
     }
 }

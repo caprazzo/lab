@@ -12,6 +12,7 @@ public class EchoBotComponentManager extends AbstractBotManager {
     @Override
     protected void initialize(BotServiceManager botService) {
         botService.addDomain("foo", "secret");
+
         botService.addBot(new Bot() {
             @Override
             public BotResponse handleMessage(Message message) {

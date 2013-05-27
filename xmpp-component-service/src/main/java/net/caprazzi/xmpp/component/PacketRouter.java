@@ -1,6 +1,8 @@
 package net.caprazzi.xmpp.component;
 
 import com.google.common.collect.HashBasedTable;
+import net.caprazzi.xmpp.component.bot.Bot;
+import net.caprazzi.xmpp.component.bot.BotExecutor;
 import org.xmpp.component.Component;
 import org.xmpp.packet.Packet;
 

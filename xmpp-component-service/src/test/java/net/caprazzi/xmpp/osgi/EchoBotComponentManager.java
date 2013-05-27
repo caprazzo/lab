@@ -1,6 +1,10 @@
 package net.caprazzi.xmpp.osgi;
 
 import net.caprazzi.xmpp.component.*;
+import net.caprazzi.xmpp.component.bot.Bot;
+import net.caprazzi.xmpp.component.bot.BotResponse;
+import net.caprazzi.xmpp.component.bot.BotResponses;
+import net.caprazzi.xmpp.component.bot.BotServiceManager;
 import org.xmpp.packet.Message;
 
 public class EchoBotComponentManager extends AbstractBotManager {

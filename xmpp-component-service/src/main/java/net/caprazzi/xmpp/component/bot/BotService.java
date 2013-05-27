@@ -1,6 +1,8 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.component.bot;
 
 
+import net.caprazzi.xmpp.component.NodeFilter;
+import net.caprazzi.xmpp.component.bot.Bot;
 import org.xmpp.component.ComponentException;
 
 public interface BotService {

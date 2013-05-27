@@ -1,6 +1,9 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.component.bot;
 
 import com.google.common.base.Strings;
+import net.caprazzi.xmpp.component.NodeFilter;
+import net.caprazzi.xmpp.component.PacketRouter;
+import net.caprazzi.xmpp.component.Responder;
 import net.caprazzi.xmpp.component.utils.AbstractInterceptComponent;
 import org.jivesoftware.whack.ExternalComponentManager;
 import org.slf4j.Logger;
@@ -43,6 +46,10 @@ public class BotServiceManager implements BotService {
         // TODO: make sure the domain does not already exist
         // TODO: make sure the password is not null or empty
         componentManager.setSecretKey(subdomain, password);
+
+        // this is to avoid conflicts after an untidy termination
+        // TODO: make this a configuration option
+        componentManager.setMultipleAllowed(subdomain, true);
         try {
             componentManager.addComponent(subdomain, new AbstractInterceptComponent(subdomain) {
                 @Override

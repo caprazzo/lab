@@ -1,6 +1,7 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.component.bot;
 
 import com.google.common.base.Optional;
+import net.caprazzi.xmpp.component.bot.BotResponse;
 import org.xmpp.packet.Packet;
 
 public class BotResponses {

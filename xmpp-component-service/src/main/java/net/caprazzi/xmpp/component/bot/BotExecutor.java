@@ -1,7 +1,9 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.component.bot;
 
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
+import net.caprazzi.xmpp.component.ComponentResponse;
+import net.caprazzi.xmpp.component.Responder;
 import org.xmpp.component.Component;
 import org.xmpp.packet.Message;
 import org.xmpp.packet.Packet;

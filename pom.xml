@@ -16,6 +16,7 @@
         <module>osgi-hello-world-api</module>
         <module>osgi-hello-world-impl</module>
         <module>osgi-hello-world-rest-api-impl</module>
+        <module>xmpp-neo4j-database</module>
 
     </modules>
 

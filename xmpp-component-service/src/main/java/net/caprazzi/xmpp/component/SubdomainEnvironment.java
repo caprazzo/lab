@@ -1,6 +1,6 @@
 package net.caprazzi.xmpp.component;
 
-import net.caprazzi.xmpp.component.bot.Bot;
+import net.caprazzi.xmpp.component.bot.PacketProcessor;
 
 public class SubdomainEnvironment {
 
@@ -11,7 +11,7 @@ public class SubdomainEnvironment {
     /**
      * Maybe to simplify things, instead of nodeFilter, we can start with just one node?
      */
-    public void addBot(Bot bot, NodeFilter nodeFilter) {
+    public void addBot(PacketProcessor bot, NodeFilter nodeFilter) {
 
     }
 

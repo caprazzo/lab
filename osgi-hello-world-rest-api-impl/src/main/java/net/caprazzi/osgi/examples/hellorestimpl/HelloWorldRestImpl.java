@@ -1,12 +1,17 @@
 package net.caprazzi.osgi.examples.hellorestimpl;
 
-import com.factset.im.examples.hello.api.HelloWorldService;
+
+
+import net.caprazzi.osgi.examples.hello.api.HelloWorldService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 
 @Path("/hello-rest")
 public class HelloWorldRestImpl {
+
+    @Context
 
     private final HelloWorldService helloService;
 

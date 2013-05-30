@@ -4,14 +4,17 @@ import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
 import net.caprazzi.xmpp.component.ComponentResponse;
 import net.caprazzi.xmpp.component.Responder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xmpp.component.Component;
-import org.xmpp.packet.Message;
 import org.xmpp.packet.Packet;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
 public class BotExecutor {
+
+    private final Logger Log = LoggerFactory.getLogger(BotExecutor.class);
 
     private final ListeningExecutorService executorService;
     private final Responder responder;
@@ -21,12 +24,12 @@ public class BotExecutor {
         this.executorService = MoreExecutors.listeningDecorator(executorService);
     }
 
-    public void execute(final Component component, Bot bot, Packet packet) {
-        ListenableFuture<BotResponse> response = executorService.submit(new BotResponseTask(bot, packet));
-        Futures.addCallback(response, new FutureCallback<BotResponse>() {
+    public void execute(final Component component, final PacketProcessor bot, final Packet packet) {
+        final ListenableFuture<ResponsePacket> response = executorService.submit(new BotResponseTask(bot, packet));
+        Futures.addCallback(response, new FutureCallback<ResponsePacket>() {
             @Override
-            public void onSuccess(BotResponse response) {
-                Preconditions.checkNotNull(response, "Bot handlers can't return null");
+            public void onSuccess(ResponsePacket response) {
+                Preconditions.checkNotNull(response, "PacketProcessor handlers can't return null");
                 if (response.getPacket().isPresent()) {
                      responder.respond(new ComponentResponse(component, response.getPacket().get()));
                 }
@@ -34,27 +37,24 @@ public class BotExecutor {
 
             @Override
             public void onFailure(Throwable throwable) {
-                throwable.printStackTrace();
+                Log.error("Failure when executing BotResponseTask. Bot: " + bot + ". packet: " + packet, throwable);
             }
         });
     }
 
-    private static class BotResponseTask implements Callable<BotResponse> {
+    private static class BotResponseTask implements Callable<ResponsePacket> {
 
-        private final Bot bot;
+        private final PacketProcessor bot;
         private final Packet packet;
 
-        public BotResponseTask(Bot bot, Packet packet) {
+        public BotResponseTask(PacketProcessor bot, Packet packet) {
             this.bot = bot;
             this.packet = packet;
         }
 
         @Override
-        public BotResponse call() throws Exception {
-            if (packet instanceof Message) {
-                return bot.handleMessage((Message)packet);
-            }
-            return BotResponses.none();
+        public ResponsePacket call() throws Exception {
+            return bot.processPacket(packet);
         }
     }
 

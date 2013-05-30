@@ -1,9 +1,8 @@
 package net.caprazzi.xmpp.component.bot;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
-import net.caprazzi.xmpp.component.NodeFilter;
-import net.caprazzi.xmpp.component.PacketRouter;
-import net.caprazzi.xmpp.component.Responder;
+import net.caprazzi.xmpp.component.*;
 import net.caprazzi.xmpp.component.utils.AbstractInterceptComponent;
 import org.jivesoftware.whack.ExternalComponentManager;
 import org.slf4j.Logger;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.xmpp.component.ComponentException;
 import org.xmpp.packet.Packet;
 
+import java.net.ConnectException;
 import java.util.concurrent.Executors;
 
 public class BotServiceManager implements BotService {
@@ -28,14 +28,26 @@ public class BotServiceManager implements BotService {
         responder.start();
     }
 
+    public synchronized void addAnnotatedBot(Object bot, String subdomain, NodeFilter nodeFilter) {
+        Log.info("Adding annotated bot {} to subdomain {} using node filter " + nodeFilter, bot, subdomain);
+        Optional<AnnotatedBotObject> annotatedBot = AnnotatedBotObject.from(bot);
+        if (!annotatedBot.isPresent()) {
+            Log.error("Provided annotated bot is not usable a bot implementation: {}", bot);
+            return;
+        }
+
+        AnnotatedBotPacketProcessor processor = new AnnotatedBotPacketProcessor(annotatedBot.get());
+        addBot(processor, subdomain, nodeFilter);
+    }
+
     @Override
-    public synchronized void addBot(Bot bot, String subdomain, NodeFilter nodeFilter) {
+    public synchronized void addBot(PacketProcessor bot, String subdomain, NodeFilter nodeFilter) {
         Log.info("Adding bot {} to subdomain {} using node filter " + nodeFilter, bot, subdomain);
         router.addBot(bot, subdomain, nodeFilter);
     }
 
     @Override
-    public synchronized void removeBot(Bot bot, String subdomain) {
+    public synchronized void removeBot(PacketProcessor bot, String subdomain) {
         Log.info("Removing bot {} from subdomain {}", bot, subdomain);
         router.removeBot(bot, subdomain);
     }
@@ -50,15 +62,36 @@ public class BotServiceManager implements BotService {
         // this is to avoid conflicts after an untidy termination
         // TODO: make this a configuration option
         componentManager.setMultipleAllowed(subdomain, true);
-        try {
-            componentManager.addComponent(subdomain, new AbstractInterceptComponent(subdomain) {
-                @Override
-                public void processPacket(Packet packet) {
-                    router.route(this, subdomain, packet);
+
+
+        while (true) {
+            try {
+                componentManager.removeComponent(subdomain);
+                componentManager.addComponent(subdomain, new AbstractInterceptComponent(subdomain) {
+                    @Override
+                    public void processPacket(Packet packet) {
+                        Log.debug("Processing incoming packet {}", packet.toXML());
+                        router.route(this, subdomain, packet);
+                    }
+                });
+                Log.info("Connected as subdomain " + subdomain);
+                break;
+            } catch (ComponentException e) {
+                e.printStackTrace();
+                if (e.getCause() instanceof ConnectException) {
+
+                    Log.warn("Connection failed when configuring subdomain " + subdomain + ". Trying again in 2s");
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
-            });
-        } catch (ComponentException e) {
-            e.printStackTrace();
+                else {
+                    throw new RuntimeException(e);
+                }
+            }
         }
     }
 

@@ -22,7 +22,7 @@ public abstract class AbstractInterceptComponent implements Component {
 
     @Override
     public String getName() {
-        return "Bot Component Manager for subdomain " + subdomain;
+        return "PacketProcessor Component Manager for subdomain " + subdomain;
     }
 
     @Override

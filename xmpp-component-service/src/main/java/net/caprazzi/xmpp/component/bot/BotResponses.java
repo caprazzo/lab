@@ -1,17 +1,22 @@
 package net.caprazzi.xmpp.component.bot;
 
 import com.google.common.base.Optional;
-import net.caprazzi.xmpp.component.bot.BotResponse;
 import org.xmpp.packet.Packet;
 
 public class BotResponses {
 
-    public static BotResponse none() {
+    public static ResponsePacket none() {
         return noResponse;
     }
 
-    public static BotResponse from(final Packet packet) {
-        return new BotResponse() {
+    public static ResponsePacket from(final Optional<Packet> packet) {
+        return (packet.isPresent())
+           ? from(packet.get())
+           : none();
+    }
+
+    public static ResponsePacket from(final Packet packet) {
+        return new ResponsePacket() {
             @Override
             public Optional<Packet> getPacket() {
                 return Optional.of(packet);
@@ -19,7 +24,7 @@ public class BotResponses {
         };
     }
 
-    private static final BotResponse noResponse = new BotResponse() {
+    private static final ResponsePacket noResponse = new ResponsePacket() {
         @Override
         public Optional<Packet> getPacket() {
             return Optional.absent();

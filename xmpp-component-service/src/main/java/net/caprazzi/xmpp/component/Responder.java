@@ -1,6 +1,8 @@
 package net.caprazzi.xmpp.component;
 
 import org.jivesoftware.whack.ExternalComponentManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -8,6 +10,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Responder {
+
+    private final Logger Log = LoggerFactory.getLogger(Responder.class);
+
     private final ExternalComponentManager manager;
 
     private BlockingQueue<ComponentResponse> outbox = new LinkedBlockingQueue<ComponentResponse>();
@@ -25,6 +30,7 @@ public class Responder {
             while(!Thread.currentThread().isInterrupted()) {
                 try {
                     ComponentResponse response = outbox.take();
+                    Log.debug("Sending response {}", response.getPacket());
                     manager.sendPacket(response.getComponent(), response.getPacket());
                 } catch (InterruptedException e) {
                     // it's ok, we have bee cancelled :(

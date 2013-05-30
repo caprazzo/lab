@@ -1,11 +1,12 @@
 package net.caprazzi.xmpp.osgi;
 
 import net.caprazzi.xmpp.component.*;
-import net.caprazzi.xmpp.component.bot.Bot;
-import net.caprazzi.xmpp.component.bot.BotResponse;
+import net.caprazzi.xmpp.component.bot.PacketProcessor;
+import net.caprazzi.xmpp.component.bot.ResponsePacket;
 import net.caprazzi.xmpp.component.bot.BotResponses;
 import net.caprazzi.xmpp.component.bot.BotServiceManager;
 import org.xmpp.packet.Message;
+import org.xmpp.packet.Packet;
 
 public class EchoBotComponentManager extends AbstractBotManager {
 
@@ -17,14 +18,17 @@ public class EchoBotComponentManager extends AbstractBotManager {
     protected void initialize(BotServiceManager botService) {
         botService.addDomain("foo", "secret");
 
-        botService.addBot(new Bot() {
+        botService.addBot(new PacketProcessor() {
             @Override
-            public BotResponse handleMessage(Message message) {
-                Message reply = new Message();
-                reply.setTo(message.getFrom());
-                reply.setFrom(message.getTo());
-                reply.setBody("You said: " + message.getBody());
-                return BotResponses.from(reply);
+            public ResponsePacket processPacket(Packet packet) {
+                if (packet instanceof Message) {
+                    Message reply = new Message();
+                    reply.setTo(packet.getFrom());
+                    reply.setFrom(packet.getTo());
+                    reply.setBody("You said: " + ((Message)packet).getBody());
+                    return BotResponses.from(reply);
+                }
+                return BotResponses.none();
             }
         }, "foo", NodeFilters.singleNode("echo"));
     }

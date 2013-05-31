@@ -1,5 +1,6 @@
 package net.caprazzi.xmpp.component;
 
+import com.google.common.base.Optional;
 import net.caprazzi.xmpp.BotEnvironment;
 import net.caprazzi.xmpp.component.AnnotatedBotObject;
 import net.caprazzi.xmpp.component.bot.BotResponses;
@@ -29,7 +30,10 @@ public class AnnotatedBotPacketProcessor implements PacketProcessor {
     }
 
     @Override
-    public ResponsePacket processPacket(Packet packet) {
-        return BotResponses.from(bot.receive(packet));
+    public void processPacket(Packet packet, BotEnvironment environment) {
+        Optional<Packet> response = bot.receive(packet);
+        if (response.isPresent()) {
+            environment.send(response.get());
+        }
     }
 }

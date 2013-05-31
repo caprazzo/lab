@@ -2,6 +2,7 @@ package net.caprazzi.xmpp.component.bot;
 
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
+import net.caprazzi.xmpp.BotEnvironment;
 import net.caprazzi.xmpp.component.ComponentResponse;
 import net.caprazzi.xmpp.component.Responder;
 import org.slf4j.Logger;
@@ -25,14 +26,21 @@ public class BotExecutor {
     }
 
     public void execute(final Component component, final PacketProcessor bot, final Packet packet) {
-        final ListenableFuture<ResponsePacket> response = executorService.submit(new BotResponseTask(bot, packet));
-        Futures.addCallback(response, new FutureCallback<ResponsePacket>() {
+
+        BotEnvironment environment = new BotEnvironment() {
+
             @Override
-            public void onSuccess(ResponsePacket response) {
-                Preconditions.checkNotNull(response, "PacketProcessor handlers can't return null");
-                if (response.getPacket().isPresent()) {
-                     responder.respond(new ComponentResponse(component, response.getPacket().get()));
-                }
+            public void send(Packet packet) {
+                Preconditions.checkNotNull(packet, "PacketProcessor can't pass null to envinronment");
+                responder.respond(new ComponentResponse(component, packet));
+            }
+        };
+
+        final ListenableFuture<Object> response = executorService.submit(new BotResponseTask(bot, packet, environment));
+        Futures.addCallback(response, new FutureCallback<Object>() {
+            @Override
+            public void onSuccess(Object response) {
+
             }
 
             @Override
@@ -42,19 +50,22 @@ public class BotExecutor {
         });
     }
 
-    private static class BotResponseTask implements Callable<ResponsePacket> {
+    private static class BotResponseTask implements Callable<Object> {
 
         private final PacketProcessor bot;
         private final Packet packet;
+        private final BotEnvironment environment;
 
-        public BotResponseTask(PacketProcessor bot, Packet packet) {
+        public BotResponseTask(PacketProcessor bot, Packet packet, BotEnvironment env) {
             this.bot = bot;
             this.packet = packet;
+            this.environment = env;
         }
 
         @Override
-        public ResponsePacket call() throws Exception {
-            return bot.processPacket(packet);
+        public Object call() throws Exception {
+            bot.processPacket(packet, environment);
+            return null;
         }
     }
 

@@ -13,6 +13,11 @@ This is an XMPP Component Service that simplifies the creation of components and
     @Reply(in = { Packet | Message | Presence | Command }, out = [ ... ])
     @Sender
 
+### General Structure:
+   - AbstractBotService: implement this to embed the service
+        - implement initialize to configure the service
+        - implement run to add subdomains and bots
+
 #### Types of bots:
 
 * Receive bot: simply receives packets and does nothing

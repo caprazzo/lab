@@ -1,5 +1,6 @@
 package net.caprazzi.xmpp.osgi;
 
+import net.caprazzi.xmpp.BotEnvironment;
 import net.caprazzi.xmpp.component.*;
 import net.caprazzi.xmpp.component.bot.PacketProcessor;
 import net.caprazzi.xmpp.component.bot.ResponsePacket;
@@ -20,15 +21,14 @@ public class EchoBotComponentManager extends AbstractBotManager {
 
         botService.addBot(new PacketProcessor() {
             @Override
-            public ResponsePacket processPacket(Packet packet) {
+            public void processPacket(Packet packet, BotEnvironment environment) {
                 if (packet instanceof Message) {
                     Message reply = new Message();
                     reply.setTo(packet.getFrom());
                     reply.setFrom(packet.getTo());
                     reply.setBody("You said: " + ((Message)packet).getBody());
-                    return BotResponses.from(reply);
+                    environment.send(reply);
                 }
-                return BotResponses.none();
             }
         }, "foo", NodeFilters.singleNode("echo"));
     }

@@ -11,7 +11,7 @@ import org.xmpp.packet.Packet;
  */
 public abstract class AbstractInterceptComponent implements Component {
 
-    private final String subdomain;
+    protected final String subdomain;
 
     public AbstractInterceptComponent(String subdomain) {
         this.subdomain = subdomain;

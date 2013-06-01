@@ -9,17 +9,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Responder {
+public class ComponentPacketSender {
 
-    private final Logger Log = LoggerFactory.getLogger(Responder.class);
+    private final Logger Log = LoggerFactory.getLogger(ComponentPacketSender.class);
 
     private final ExternalComponentManager manager;
 
-    private BlockingQueue<ComponentResponse> outbox = new LinkedBlockingQueue<ComponentResponse>();
+    private BlockingQueue<ComponentPacket> outbox = new LinkedBlockingQueue<ComponentPacket>();
 
     final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    public Responder(ExternalComponentManager manager) {
+    public ComponentPacketSender(ExternalComponentManager manager) {
         this.manager = manager;
     }
 
@@ -29,7 +29,7 @@ public class Responder {
             public void run() {
             while(!Thread.currentThread().isInterrupted()) {
                 try {
-                    ComponentResponse response = outbox.take();
+                    ComponentPacket response = outbox.take();
                     Log.debug("Sending response {}", response.getPacket());
                     manager.sendPacket(response.getComponent(), response.getPacket());
                 } catch (InterruptedException e) {
@@ -44,9 +44,9 @@ public class Responder {
         executor.shutdownNow();
     }
 
-    public void respond(ComponentResponse componentResponse) {
+    public void send(ComponentPacket componentPacket) {
         try {
-            outbox.put(componentResponse);
+            outbox.put(componentPacket);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }

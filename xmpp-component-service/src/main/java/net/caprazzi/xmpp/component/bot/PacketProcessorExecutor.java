@@ -3,8 +3,8 @@ package net.caprazzi.xmpp.component.bot;
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
 import net.caprazzi.xmpp.BotEnvironment;
-import net.caprazzi.xmpp.component.ComponentResponse;
-import net.caprazzi.xmpp.component.Responder;
+import net.caprazzi.xmpp.component.ComponentPacket;
+import net.caprazzi.xmpp.component.ComponentPacketSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.component.Component;
@@ -13,30 +13,30 @@ import org.xmpp.packet.Packet;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 
-public class BotExecutor {
+public class PacketProcessorExecutor {
 
-    private final Logger Log = LoggerFactory.getLogger(BotExecutor.class);
+    private final Logger Log = LoggerFactory.getLogger(PacketProcessorExecutor.class);
 
     private final ListeningExecutorService executorService;
-    private final Responder responder;
+    private final ComponentPacketSender sender;
 
-    public BotExecutor(ExecutorService executorService, Responder responder) {
-        this.responder = responder;
+    public PacketProcessorExecutor(ExecutorService executorService, ComponentPacketSender sender) {
+        this.sender = sender;
         this.executorService = MoreExecutors.listeningDecorator(executorService);
     }
 
-    public void execute(final Component component, final PacketProcessor bot, final Packet packet) {
+    public void execute(final Component component, final PacketProcessor processor, final Packet packet) {
 
         BotEnvironment environment = new BotEnvironment() {
 
             @Override
             public void send(Packet packet) {
                 Preconditions.checkNotNull(packet, "PacketProcessor can't pass null to envinronment");
-                responder.respond(new ComponentResponse(component, packet));
+                sender.send(new ComponentPacket(component, packet));
             }
         };
 
-        final ListenableFuture<Object> response = executorService.submit(new BotResponseTask(bot, packet, environment));
+        final ListenableFuture<Object> response = executorService.submit(new PacketProcessorTask(processor, packet, environment));
         Futures.addCallback(response, new FutureCallback<Object>() {
             @Override
             public void onSuccess(Object response) {
@@ -45,18 +45,18 @@ public class BotExecutor {
 
             @Override
             public void onFailure(Throwable throwable) {
-                Log.error("Failure when executing BotResponseTask. Bot: " + bot + ". packet: " + packet, throwable);
+                Log.error("Failure when executing PacketProcessorTask. Bot: " + processor + ". packet: " + packet, throwable);
             }
         });
     }
 
-    private static class BotResponseTask implements Callable<Object> {
+    private static class PacketProcessorTask implements Callable<Object> {
 
         private final PacketProcessor bot;
         private final Packet packet;
         private final BotEnvironment environment;
 
-        public BotResponseTask(PacketProcessor bot, Packet packet, BotEnvironment env) {
+        public PacketProcessorTask(PacketProcessor bot, Packet packet, BotEnvironment env) {
             this.bot = bot;
             this.packet = packet;
             this.environment = env;

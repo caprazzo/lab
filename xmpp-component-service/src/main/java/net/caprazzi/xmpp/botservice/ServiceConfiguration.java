@@ -3,6 +3,7 @@ package net.caprazzi.xmpp.botservice;
 public class ServiceConfiguration {
     private String host;
     private int port;
+    private String secret;
 
     public String getHost() {
         return host;
@@ -13,6 +14,18 @@ public class ServiceConfiguration {
     }
 
     public String getSecret(String subdomain) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return secret;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 }

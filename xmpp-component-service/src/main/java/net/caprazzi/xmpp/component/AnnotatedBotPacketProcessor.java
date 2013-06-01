@@ -8,25 +8,11 @@ import net.caprazzi.xmpp.component.bot.PacketProcessor;
 import net.caprazzi.xmpp.component.bot.ResponsePacket;
 import org.xmpp.packet.Packet;
 
-/**
-* Created with IntelliJ IDEA.
-* User: mcaprari
-* Date: 30/05/13
-* Time: 18:10
-* To change this template use File | Settings | File Templates.
-*/
 public class AnnotatedBotPacketProcessor implements PacketProcessor {
     private final AnnotatedBotObject bot;
-
-    public AnnotatedBotPacketProcessor(AnnotatedBotObject bot) {
+    public AnnotatedBotPacketProcessor(AnnotatedBotObject bot, final BotEnvironment env) {
         this.bot = bot;
-        bot.inject(new BotEnvironment() {
-
-            @Override
-            public void send(Packet packet) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-        });
+        bot.inject(env);
     }
 
     @Override

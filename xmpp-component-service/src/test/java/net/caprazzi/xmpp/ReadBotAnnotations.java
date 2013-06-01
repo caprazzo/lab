@@ -24,8 +24,8 @@ public class ReadBotAnnotations extends AbstractBotManager {
         Optional<AnnotatedBotObject> annotatedBot = AnnotatedBotObject.from(bot);
         if (annotatedBot.isPresent()) {
             // TODO: use botService.addBot()
-            AnnotatedBotPacketProcessor processor = new AnnotatedBotPacketProcessor(annotatedBot.get());
-            botService.addBot(processor, "foo", NodeFilters.singleNode("foo"));
+            //AnnotatedBotPacketProcessor processor = new AnnotatedBotPacketProcessor(annotatedBot.get(), sender);
+            //botService.addBot(processor, "foo", NodeFilters.singleNode("foo"));
         }
     }
 

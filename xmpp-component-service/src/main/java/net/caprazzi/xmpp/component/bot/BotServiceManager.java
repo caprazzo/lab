@@ -18,13 +18,13 @@ public class BotServiceManager implements BotService {
     private final Logger Log = LoggerFactory.getLogger(BotServiceManager.class);
 
     private final ExternalComponentManager componentManager;
-    private final PacketRouter router;
+    private final SubdomainPacketRouter router;
 
     public BotServiceManager(ExternalComponentManager componentManager) {
         this.componentManager = componentManager;
-        Responder responder = new Responder(componentManager);
-        BotExecutor botExecutor = new BotExecutor(Executors.newFixedThreadPool(10), responder);
-        router = new PacketRouter(botExecutor);
+        ComponentPacketSender responder = new ComponentPacketSender(componentManager);
+        PacketProcessorExecutor botExecutor = new PacketProcessorExecutor(Executors.newFixedThreadPool(10), responder);
+        router = new SubdomainPacketRouter(botExecutor);
         responder.start();
     }
 
@@ -36,8 +36,8 @@ public class BotServiceManager implements BotService {
             return;
         }
 
-        AnnotatedBotPacketProcessor processor = new AnnotatedBotPacketProcessor(annotatedBot.get());
-        addBot(processor, subdomain, nodeFilter);
+       // AnnotatedBotPacketProcessor processor = new AnnotatedBotPacketProcessor(annotatedBot.get(), sender);
+       // addBot(processor, subdomain, nodeFilter);
     }
 
     @Override

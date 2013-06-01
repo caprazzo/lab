@@ -2,7 +2,7 @@ package net.caprazzi.xmpp.component;
 
 import com.google.common.collect.HashBasedTable;
 import net.caprazzi.xmpp.component.bot.PacketProcessor;
-import net.caprazzi.xmpp.component.bot.BotExecutor;
+import net.caprazzi.xmpp.component.bot.PacketProcessorExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.component.Component;
@@ -11,14 +11,14 @@ import org.xmpp.packet.Packet;
 import java.util.Map;
 import java.util.Set;
 
-public class PacketRouter {
+public class SubdomainPacketRouter {
 
-    private final Logger Log = LoggerFactory.getLogger(PacketRouter.class);
+    private final Logger Log = LoggerFactory.getLogger(SubdomainPacketRouter.class);
 
-    private final BotExecutor executor;
+    private final PacketProcessorExecutor executor;
     private final HashBasedTable<PacketProcessor, String, NodeFilter> table = HashBasedTable.create();
 
-    public PacketRouter(BotExecutor executor) {
+    public SubdomainPacketRouter(PacketProcessorExecutor executor) {
         this.executor = executor;
     }
 

@@ -1,15 +1,13 @@
 package net.caprazzi.xmpp.botservice;
 
-import net.caprazzi.xmpp.component.NodeFilter;
-import net.caprazzi.xmpp.component.PacketRouter;
-import net.caprazzi.xmpp.component.bot.PacketProcessor;
-import net.caprazzi.xmpp.component.utils.AbstractInterceptComponent;
-import org.jivesoftware.whack.ExternalComponentManager;
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import net.caprazzi.xmpp.component.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xmpp.component.Component;
-import org.xmpp.component.ComponentException;
-import org.xmpp.packet.Packet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SubdomainEnvironment {
 
@@ -17,7 +15,10 @@ public class SubdomainEnvironment {
     private String secret;
     private final Logger log;
 
+    private final ArrayList<AnnotatedBotHolder> bots = new ArrayList<AnnotatedBotHolder>();
+
     SubdomainEnvironment(String subdomain) {
+        Preconditions.checkNotNull(subdomain, "Subdomain must not be null.");
         log = LoggerFactory.getLogger(this.getClass() + "." + subdomain);
         this.subdomain = subdomain;
     }
@@ -26,38 +27,33 @@ public class SubdomainEnvironment {
         this.secret = secret;
     }
 
-    void connect(ExternalComponentManager componentManager, PacketRouter router) {
-        Component component = new PacketRouterComponent(router, subdomain);
-        try {
-            componentManager.setSecretKey(subdomain, secret);
-            componentManager.removeComponent(subdomain);
-            componentManager.addComponent(subdomain, component);
-            log.info("Connected");
-        } catch (ComponentException e) {
-            throw new RuntimeException(e);
-        }
+    public List<AnnotatedBotHolder> getBots() {
+        return bots;
     }
 
-    /**
-     * Maybe to simplify things, instead of nodeFilter, we can start with just one node?
-     */
-    public void addBot(PacketProcessor bot, NodeFilter nodeFilter) {
-
+    public void addBot(Object bot, String node) {
+        Preconditions.checkNotNull(bot, "Bot object must not be null.");
+        Preconditions.checkNotNull(node, "node must not be null.");
+        addBot(bot, NodeFilters.singleNode(node));
     }
 
-    private class PacketRouterComponent extends AbstractInterceptComponent {
-        private final PacketRouter router;
+    private void addBot(Object bot, NodeFilter nodeFilter) {
+        Preconditions.checkNotNull(bot, "Bot object must not be null.");
+        Preconditions.checkNotNull(nodeFilter, "NodeFilter must not be null.");
 
-        public PacketRouterComponent(PacketRouter router, String subdomain) {
-            super(subdomain);
-            this.router = router;
+        Optional<AnnotatedBotObject> annotatedBot = AnnotatedBotObject.from(bot);
+        if (!annotatedBot.isPresent()) {
+            log.error("Provided annotated bot is not a valid bot implementation: {}", bot);
+            return;
         }
-
-        @Override
-        public void processPacket(Packet packet) {
-            log.debug("Processing incoming packet {}", packet.toXML());
-            router.route(this, subdomain, packet);
-        }
+        bots.add(new AnnotatedBotHolder(annotatedBot.get(), nodeFilter));
     }
 
+    public String getName() {
+        return subdomain;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
 }

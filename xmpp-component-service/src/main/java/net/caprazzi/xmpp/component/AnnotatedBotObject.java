@@ -1,6 +1,7 @@
 package net.caprazzi.xmpp.component;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import net.caprazzi.xmpp.BotContext;
 import net.caprazzi.xmpp.BotEnvironment;
 import org.slf4j.Logger;
@@ -29,14 +30,15 @@ public class AnnotatedBotObject {
     private final Collection<ReceiverMethod> receiverMethods;
 
     AnnotatedBotObject(Object obj) {
+        Preconditions.checkNotNull(obj, "Bot object must not be null.");
         this.obj = obj;
         this.clazz = obj.getClass();
-
         injecatbleFields = scanInjectableFields();
         receiverMethods = scanReceiverMethods();
     }
 
     public static Optional<AnnotatedBotObject> from(Object obj) {
+        Preconditions.checkNotNull(obj, "Bot object must not be null.");
         AnnotatedBotObject annotated = new AnnotatedBotObject(obj);
         if (annotated.injecatbleFields.size() > 0 || annotated.receiverMethods.size() > 0) {
             return Optional.of(annotated);

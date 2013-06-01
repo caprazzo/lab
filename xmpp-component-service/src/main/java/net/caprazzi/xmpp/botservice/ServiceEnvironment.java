@@ -1,20 +1,21 @@
 package net.caprazzi.xmpp.botservice;
 
-import net.caprazzi.xmpp.component.PacketRouter;
-import net.caprazzi.xmpp.component.Responder;
-import net.caprazzi.xmpp.component.bot.BotExecutor;
-import org.jivesoftware.whack.ExternalComponentManager;
+import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.concurrent.Executors;
 
 public class ServiceEnvironment {
 
+    private final Logger Log = LoggerFactory.getLogger(ServiceEnvironment.class);
+
     private final HashMap<String, SubdomainEnvironment> subdomains = new HashMap<String, SubdomainEnvironment>();
     private final ServiceConfiguration configuration;
-    private String secret;
 
     ServiceEnvironment(ServiceConfiguration configuration) {
+        Preconditions.checkNotNull(configuration, "Configuration can't be null.");
         this.configuration = configuration;
     }
 
@@ -28,15 +29,8 @@ public class ServiceEnvironment {
         return env;
     }
 
-    public void connect(ExternalComponentManager componentManager) {
-        Responder responder = new Responder(componentManager);
-        BotExecutor botExecutor = new BotExecutor(Executors.newFixedThreadPool(10), responder);
-        PacketRouter router = new PacketRouter(botExecutor);
-
-        for(SubdomainEnvironment subdomain : subdomains.values()) {
-            subdomain.connect(componentManager, router);
-        }
-
-        responder.start();
+    public Collection<SubdomainEnvironment> getSubdomains() {
+        return subdomains.values();
     }
+
 }

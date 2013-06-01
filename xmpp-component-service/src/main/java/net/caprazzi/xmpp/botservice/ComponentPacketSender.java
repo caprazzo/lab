@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.botservice;
 
 import org.jivesoftware.whack.ExternalComponentManager;
 import org.slf4j.Logger;

@@ -1,10 +1,10 @@
-package net.caprazzi.xmpp.component.bot;
+package net.caprazzi.xmpp.component;
 
 import com.google.common.base.Preconditions;
 import com.google.common.util.concurrent.*;
-import net.caprazzi.xmpp.BotEnvironment;
-import net.caprazzi.xmpp.component.ComponentPacket;
-import net.caprazzi.xmpp.component.ComponentPacketSender;
+import net.caprazzi.xmpp.bot.BotEnvironment;
+import net.caprazzi.xmpp.botservice.ComponentPacket;
+import net.caprazzi.xmpp.botservice.ComponentPacketSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.component.Component;

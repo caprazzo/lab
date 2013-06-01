@@ -1,8 +1,5 @@
 package net.caprazzi.xmpp.botservice;
 
-import net.caprazzi.xmpp.component.AnnotatedBotObject;
-import net.caprazzi.xmpp.component.NodeFilter;
-
 class AnnotatedBotHolder {
     private final AnnotatedBotObject bot;
     private final NodeFilter nodeFilter;

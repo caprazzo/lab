@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.botservice;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

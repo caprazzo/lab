@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp.component.utils;
+package net.caprazzi.xmpp.component;
 
 import org.xmpp.component.Component;
 import org.xmpp.component.ComponentException;

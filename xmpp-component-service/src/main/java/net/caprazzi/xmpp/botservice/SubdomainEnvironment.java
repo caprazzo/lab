@@ -2,7 +2,6 @@ package net.caprazzi.xmpp.botservice;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import net.caprazzi.xmpp.component.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,7 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.botservice;
 
 import com.google.common.base.Optional;
-import net.caprazzi.xmpp.Receive;
+import net.caprazzi.xmpp.bot.Receive;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.packet.Packet;

@@ -1,5 +1,6 @@
 package net.caprazzi.xmpp;
 
+import net.caprazzi.xmpp.bot.Receive;
 import net.caprazzi.xmpp.botservice.AbstractBotService;
 import net.caprazzi.xmpp.botservice.ServiceConfiguration;
 import net.caprazzi.xmpp.botservice.ServiceEnvironment;

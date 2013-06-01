@@ -1,8 +1,8 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.botservice;
 
 import com.google.common.collect.HashBasedTable;
-import net.caprazzi.xmpp.component.bot.PacketProcessor;
-import net.caprazzi.xmpp.component.bot.PacketProcessorExecutor;
+import net.caprazzi.xmpp.component.PacketProcessor;
+import net.caprazzi.xmpp.component.PacketProcessorExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.component.Component;

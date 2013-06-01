@@ -1,7 +1,6 @@
 package net.caprazzi.xmpp.botservice;
 
-import net.caprazzi.xmpp.component.SubdomainPacketRouter;
-import net.caprazzi.xmpp.component.utils.AbstractInterceptComponent;
+import net.caprazzi.xmpp.component.AbstractInterceptComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.packet.Packet;

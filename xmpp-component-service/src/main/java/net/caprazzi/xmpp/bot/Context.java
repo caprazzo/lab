@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp;
+package net.caprazzi.xmpp.bot;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BotContext {
+public @interface Context {
 }

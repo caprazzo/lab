@@ -1,9 +1,9 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.botservice;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import net.caprazzi.xmpp.BotContext;
-import net.caprazzi.xmpp.BotEnvironment;
+import net.caprazzi.xmpp.bot.Context;
+import net.caprazzi.xmpp.bot.BotEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.packet.Packet;
@@ -72,7 +72,7 @@ public class AnnotatedBotObject {
     }
 
     private boolean isInjectable(Field field) {
-        BotContext annotation = field.getAnnotation(BotContext.class);
+        Context annotation = field.getAnnotation(Context.class);
         if (annotation == null) {
             return false;
         }
@@ -80,7 +80,7 @@ public class AnnotatedBotObject {
             return true;
         }
         else {
-            Log.debug("Field marked @BotContext is not valid because its type is not supported : {}", field);
+            Log.debug("Field marked @Context is not valid because its type is not supported : {}", field);
             return false;
         }
     }

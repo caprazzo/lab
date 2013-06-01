@@ -1,11 +1,7 @@
 package net.caprazzi.xmpp.botservice;
 
-import net.caprazzi.xmpp.BotEnvironment;
-import net.caprazzi.xmpp.component.AnnotatedBotPacketProcessor;
-import net.caprazzi.xmpp.component.ComponentPacket;
-import net.caprazzi.xmpp.component.ComponentPacketSender;
-import net.caprazzi.xmpp.component.SubdomainPacketRouter;
-import net.caprazzi.xmpp.component.bot.PacketProcessorExecutor;
+import net.caprazzi.xmpp.bot.BotEnvironment;
+import net.caprazzi.xmpp.component.PacketProcessorExecutor;
 import org.jivesoftware.whack.ExternalComponentManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

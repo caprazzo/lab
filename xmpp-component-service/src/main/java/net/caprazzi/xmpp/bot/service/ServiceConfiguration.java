@@ -28,4 +28,8 @@ public class ServiceConfiguration {
     public void setSecret(String secret) {
         this.secret = secret;
     }
+
+    public String getSecret() {
+        return secret;
+    }
 }

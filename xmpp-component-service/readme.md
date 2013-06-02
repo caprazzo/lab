@@ -1,13 +1,15 @@
 ## Botto - XMPP Bot Service
 
-Botto is a Java framework for easy development on XMPP Bots
+Botto is a Java framework for easy development of XMPP Bots
 
-Botto has out-of-the-box support for:
-* annotation-only pojo bots
-* multiple bots per instance (bot@example.com)
+* annotation-based POJO bots
+* multiple bots per instance (bot@example.com) [todo]
 * multiple components per instance, each with multiple bots (bot@service.example.com)
-* metrics [todo]
+* easy setup
+* embeddable
 
+* metrics [todo]
+* support for ad-hoc commands [todo]
 
     public class EchoBot {
         @Receive

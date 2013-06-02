@@ -1,10 +1,7 @@
 package net.caprazzi.xmpp;
 
 import net.caprazzi.xmpp.bot.api.Receive;
-import net.caprazzi.xmpp.bot.service.AbstractBotService;
-import net.caprazzi.xmpp.bot.service.ServiceConfiguration;
-import net.caprazzi.xmpp.bot.service.ServiceEnvironment;
-import net.caprazzi.xmpp.bot.service.SubdomainEnvironment;
+import net.caprazzi.xmpp.bot.service.*;
 import org.xmpp.packet.Message;
 
 public class EchoBotService extends AbstractBotService {
@@ -20,6 +17,8 @@ public class EchoBotService extends AbstractBotService {
     @Override
     public void run(ServiceEnvironment environment) {
         EchoBot bot = new EchoBot();
+
+        BotEnvironment echoBot = environment.addBot(new EchoBot(), "echo_bot");
 
         SubdomainEnvironment subdomain = environment.getSubdomain("foo");
         subdomain.addBot(bot, "echo");

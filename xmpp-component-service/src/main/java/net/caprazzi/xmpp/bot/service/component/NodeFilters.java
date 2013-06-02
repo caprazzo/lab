@@ -1,6 +1,4 @@
-package net.caprazzi.xmpp.botservice;
-
-import net.caprazzi.xmpp.botservice.NodeFilter;
+package net.caprazzi.xmpp.bot.service.component;
 
 public class NodeFilters {
 

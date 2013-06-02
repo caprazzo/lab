@@ -1,7 +1,7 @@
-package net.caprazzi.xmpp.botservice;
+package net.caprazzi.xmpp.bot.service.reflection;
 
 import com.google.common.base.Optional;
-import net.caprazzi.xmpp.bot.Receive;
+import net.caprazzi.xmpp.bot.api.Receive;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.packet.Packet;
@@ -10,13 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-/**
-* Created with IntelliJ IDEA.
-* User: mcaprari
-* Date: 30/05/13
-* Time: 17:48
-* To change this template use File | Settings | File Templates.
-*/
 public class ReceiverMethod {
 
     private static final Logger Log = LoggerFactory.getLogger(ReceiverMethod.class);
@@ -25,8 +18,7 @@ public class ReceiverMethod {
     private final Class<?>[] arguments;
     private final int receiverArgument;
 
-
-    public ReceiverMethod(Method method, Class<?>[] arguments, int receiverArgument) {
+    private ReceiverMethod(Method method, Class<?>[] arguments, int receiverArgument) {
         this.method = method;
         this.arguments = arguments;
         this.receiverArgument = receiverArgument;

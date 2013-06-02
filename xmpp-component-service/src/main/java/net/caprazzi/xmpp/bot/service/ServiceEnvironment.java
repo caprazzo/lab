@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp.botservice;
+package net.caprazzi.xmpp.bot.service;
 
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
@@ -29,8 +29,7 @@ public class ServiceEnvironment {
         return env;
     }
 
-    public Collection<SubdomainEnvironment> getSubdomains() {
+    Collection<SubdomainEnvironment> getSubdomains() {
         return subdomains.values();
     }
-
 }

@@ -1,9 +1,11 @@
-package net.caprazzi.xmpp.botservice;
+package net.caprazzi.xmpp.bot.service.reflection;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
-import net.caprazzi.xmpp.bot.Context;
-import net.caprazzi.xmpp.bot.BotEnvironment;
+import net.caprazzi.xmpp.bot.api.Context;
+import net.caprazzi.xmpp.bot.api.PacketOutput;
+import net.caprazzi.xmpp.bot.service.AbstractBot;
+import net.caprazzi.xmpp.bot.service.utils.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.packet.Packet;
@@ -14,14 +16,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 
-/**
-* Created with IntelliJ IDEA.
-* User: mcaprari
-* Date: 30/05/13
-* Time: 17:45
-* To change this template use File | Settings | File Templates.
-*/
-public class AnnotatedBotObject {
+public class AnnotatedBotObject extends AbstractBot {
 
     private final Logger Log = LoggerFactory.getLogger(AnnotatedBotObject.class);
     private final Class<?> clazz;
@@ -29,7 +24,7 @@ public class AnnotatedBotObject {
     private final Collection<Field> injecatbleFields;
     private final Collection<ReceiverMethod> receiverMethods;
 
-    AnnotatedBotObject(Object obj) {
+    private AnnotatedBotObject(Object obj) {
         Preconditions.checkNotNull(obj, "Bot object must not be null.");
         this.obj = obj;
         this.clazz = obj.getClass();
@@ -76,7 +71,7 @@ public class AnnotatedBotObject {
         if (annotation == null) {
             return false;
         }
-        if (BotEnvironment.class.isAssignableFrom(field.getType())) {
+        if (PacketOutput.class.isAssignableFrom(field.getType())) {
             return true;
         }
         else {
@@ -85,16 +80,16 @@ public class AnnotatedBotObject {
         }
     }
 
-    public Optional<Packet> receive(Packet packet) {
+    public Packet doReceive(Packet packet) {
         for (ReceiverMethod method : receiverMethods) {
             if (method.canReceive(packet)) {
-                return method.receive(obj, packet);
+                return method.receive(obj, packet).orNull();
             }
         }
-        return Optional.absent();
+        return null;
     }
 
-    public void inject(Object value) {
+    private void inject(Object value) {
         for(Field field : injecatbleFields) {
             if (!Modifier.isPublic(field.getModifiers())) {
                 field.setAccessible(true);
@@ -113,5 +108,10 @@ public class AnnotatedBotObject {
             }
 
         }
+    }
+
+    @Override
+    public void doSetPacketOutput(PacketOutput output) {
+        inject(output);
     }
 }

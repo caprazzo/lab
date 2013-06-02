@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp.bot;
+package net.caprazzi.xmpp.bot.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * This annotation is used to inject information into a class
  * field, bean property or method parameter.
- * @See BotEnvironment
+ * @See PacketOutput
  */
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp.botservice;
+package net.caprazzi.xmpp.bot.service.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -6,8 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-
-class ReflectionUtils {
+public class ReflectionUtils {
 
     public static Set<Method> methods(Class<?> clazz) {
         HashSet<Method> methods = new HashSet<Method>();

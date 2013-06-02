@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp.component;
+package net.caprazzi.xmpp.bot.service.component;
 
 import org.xmpp.component.Component;
 import org.xmpp.component.ComponentException;
@@ -22,7 +22,7 @@ public abstract class AbstractInterceptComponent implements Component {
 
     @Override
     public String getName() {
-        return "PacketProcessor Component Manager for subdomain " + subdomain;
+        return "Bot Component Manager for subdomain " + subdomain;
     }
 
     @Override

@@ -1,7 +1,7 @@
-package net.caprazzi.xmpp.bot;
+package net.caprazzi.xmpp.bot.api;
 
 import org.xmpp.packet.Packet;
 
-public interface BotEnvironment {
+public interface PacketOutput {
     void send(Packet packet);
 }

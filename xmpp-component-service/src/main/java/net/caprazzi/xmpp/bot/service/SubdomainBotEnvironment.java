@@ -1,10 +1,13 @@
-package net.caprazzi.xmpp.botservice;
+package net.caprazzi.xmpp.bot.service;
 
-class AnnotatedBotHolder {
+import net.caprazzi.xmpp.bot.service.component.NodeFilter;
+import net.caprazzi.xmpp.bot.service.reflection.AnnotatedBotObject;
+
+class SubdomainBotEnvironment {
     private final AnnotatedBotObject bot;
     private final NodeFilter nodeFilter;
 
-    public AnnotatedBotHolder(AnnotatedBotObject bot, NodeFilter nodeFilter) {
+    public SubdomainBotEnvironment(AnnotatedBotObject bot, NodeFilter nodeFilter) {
         this.bot = bot;
         this.nodeFilter = nodeFilter;
     }

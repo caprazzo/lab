@@ -1,20 +1,20 @@
 package net.caprazzi.xmpp;
 
-import net.caprazzi.xmpp.bot.Receive;
-import net.caprazzi.xmpp.botservice.AbstractBotService;
-import net.caprazzi.xmpp.botservice.ServiceConfiguration;
-import net.caprazzi.xmpp.botservice.ServiceEnvironment;
-import net.caprazzi.xmpp.botservice.SubdomainEnvironment;
+import net.caprazzi.xmpp.bot.api.Receive;
+import net.caprazzi.xmpp.bot.service.AbstractBotService;
+import net.caprazzi.xmpp.bot.service.ServiceConfiguration;
+import net.caprazzi.xmpp.bot.service.ServiceEnvironment;
+import net.caprazzi.xmpp.bot.service.SubdomainEnvironment;
 import org.xmpp.packet.Message;
 
-public class NewEnvironmentLayout extends AbstractBotService {
+public class EchoBotService extends AbstractBotService {
 
     public static void main(String[] main) {
         ServiceConfiguration configuration = new ServiceConfiguration();
         configuration.setHost("localhost");
         configuration.setPort(5275);
         configuration.setSecret("secret");
-        new NewEnvironmentLayout().run(configuration);
+        new EchoBotService().run(configuration);
     }
 
     @Override

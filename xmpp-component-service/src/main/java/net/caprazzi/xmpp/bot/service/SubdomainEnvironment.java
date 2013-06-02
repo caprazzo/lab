@@ -1,7 +1,11 @@
-package net.caprazzi.xmpp.botservice;
+package net.caprazzi.xmpp.bot.service;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+
+import net.caprazzi.xmpp.bot.service.component.NodeFilter;
+import net.caprazzi.xmpp.bot.service.component.NodeFilters;
+import net.caprazzi.xmpp.bot.service.reflection.AnnotatedBotObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +18,7 @@ public class SubdomainEnvironment {
     private String secret;
     private final Logger log;
 
-    private final ArrayList<AnnotatedBotHolder> bots = new ArrayList<AnnotatedBotHolder>();
+    private final ArrayList<SubdomainBotEnvironment> bots = new ArrayList<SubdomainBotEnvironment>();
 
     SubdomainEnvironment(String subdomain) {
         Preconditions.checkNotNull(subdomain, "Subdomain must not be null.");
@@ -26,13 +30,15 @@ public class SubdomainEnvironment {
         this.secret = secret;
     }
 
-    public List<AnnotatedBotHolder> getBots() {
+    public List<SubdomainBotEnvironment> getBots() {
         return bots;
     }
 
+    // TODO: prevent adding of the same bot instance to two subdomains
     public void addBot(Object bot, String node) {
         Preconditions.checkNotNull(bot, "Bot object must not be null.");
         Preconditions.checkNotNull(node, "node must not be null.");
+
         addBot(bot, NodeFilters.singleNode(node));
     }
 
@@ -45,7 +51,7 @@ public class SubdomainEnvironment {
             log.error("Provided annotated bot is not a valid bot implementation: {}", bot);
             return;
         }
-        bots.add(new AnnotatedBotHolder(annotatedBot.get(), nodeFilter));
+        bots.add(new SubdomainBotEnvironment(annotatedBot.get(), nodeFilter));
     }
 
     public String getName() {

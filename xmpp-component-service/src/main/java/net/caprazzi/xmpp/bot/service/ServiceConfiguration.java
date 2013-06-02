@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp.botservice;
+package net.caprazzi.xmpp.bot.service;
 
 public class ServiceConfiguration {
     private String host;

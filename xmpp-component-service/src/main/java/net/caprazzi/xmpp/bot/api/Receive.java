@@ -1,4 +1,4 @@
-package net.caprazzi.xmpp.bot;
+package net.caprazzi.xmpp.bot.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -30,8 +30,6 @@ public abstract class AbstractBotService {
             // create a component for each subdomain
             final Component component = new PacketRoutingComponent(router, subdomain.getName());
 
-            // a bot environment that routes outgoing packets to a ComponentPacketSender
-            // TODO: create a sender instance for each domain, all putting in the same queue?
             PacketOutput output = new PacketOutput() {
                 @Override
                 public void send(Packet packet) {

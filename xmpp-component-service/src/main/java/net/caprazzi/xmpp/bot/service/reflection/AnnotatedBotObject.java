@@ -114,4 +114,8 @@ public class AnnotatedBotObject extends AbstractBot {
     public void doSetPacketOutput(PacketOutput output) {
         inject(output);
     }
+
+    public Object getObject() {
+        return obj;
+    }
 }

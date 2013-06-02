@@ -22,7 +22,7 @@ public class ServiceEnvironment {
     public SubdomainEnvironment getSubdomain(String subdomain) {
         SubdomainEnvironment env = subdomains.get(subdomain);
         if (env == null) {
-            env = new SubdomainEnvironment(subdomain);
+            env = new SubdomainEnvironment(this, subdomain);
             env.setSecret(configuration.getSecret(subdomain));
             subdomains.put(subdomain, env);
         }
@@ -31,5 +31,16 @@ public class ServiceEnvironment {
 
     Collection<SubdomainEnvironment> getSubdomains() {
         return subdomains.values();
+    }
+
+    public boolean isBotInOtherSubdomains(SubdomainEnvironment subdomain, Object bot) {
+        for(SubdomainEnvironment sub : subdomains.values()) {
+            if (sub == subdomain)
+                continue;
+
+            if (sub.hasBot(bot))
+                return true;
+        }
+        return false;
     }
 }

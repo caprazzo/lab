@@ -15,12 +15,14 @@ import java.util.List;
 public class SubdomainEnvironment {
 
     private final String subdomain;
+    private final ServiceEnvironment service;
     private String secret;
     private final Logger log;
 
     private final ArrayList<SubdomainBotEnvironment> bots = new ArrayList<SubdomainBotEnvironment>();
 
-    SubdomainEnvironment(String subdomain) {
+    SubdomainEnvironment(ServiceEnvironment service, String subdomain) {
+        this.service = service;
         Preconditions.checkNotNull(subdomain, "Subdomain must not be null.");
         log = LoggerFactory.getLogger(this.getClass() + "." + subdomain);
         this.subdomain = subdomain;
@@ -44,6 +46,7 @@ public class SubdomainEnvironment {
 
     private void addBot(Object bot, NodeFilter nodeFilter) {
         Preconditions.checkNotNull(bot, "Bot object must not be null.");
+        Preconditions.checkArgument(!service.isBotInOtherSubdomains(this, bot), "This bot instance has already been added to another subdomain. A bot instance can only be added to one subdomain.");
         Preconditions.checkNotNull(nodeFilter, "NodeFilter must not be null.");
 
         Optional<AnnotatedBotObject> annotatedBot = AnnotatedBotObject.from(bot);
@@ -60,5 +63,14 @@ public class SubdomainEnvironment {
 
     public String getSecret() {
         return secret;
+    }
+
+    public boolean hasBot(Object bot) {
+        for (SubdomainBotEnvironment botEnv : bots) {
+            if (botEnv.getBot().getObject() == bot) {
+                return true;
+            }
+        }
+        return false;
     }
 }

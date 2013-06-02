@@ -25,17 +25,14 @@ public class ComponentBotRouter {
 
     public synchronized void route(String subdomain, Packet packet) {
         Log.debug("Request to route to subdomain {} for packet {}", subdomain, packet.toXML());
-
-        // TODO: make defensive copies of Packet
         for(Map.Entry<Bot, NodeFilter> entry : table.column(subdomain).entrySet()) {
             if (entry.getValue().accept(packet.getTo().getNode())) {
                 Log.debug("Routing packet {} to processor {} ", packet.toXML(), entry.getKey());
-                executor.execute(entry.getKey(), packet);
+                executor.execute(entry.getKey(), packet.createCopy());
             }
         }
     }
 
-    // TODO: maybe nodeFilter belongs inside the AbstractBot?
     public synchronized void addBot(Bot bot, String subdomain, NodeFilter nodeFilter) {
         table.put(bot, subdomain, nodeFilter);
     }

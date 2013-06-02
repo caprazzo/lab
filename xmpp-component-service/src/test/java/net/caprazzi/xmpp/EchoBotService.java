@@ -19,9 +19,15 @@ public class EchoBotService extends AbstractBotService {
 
     @Override
     public void run(ServiceEnvironment environment) {
-        SubdomainEnvironment subdomain = environment.getSubdomain("foo");
         EchoBot bot = new EchoBot();
+
+        SubdomainEnvironment subdomain = environment.getSubdomain("foo");
         subdomain.addBot(bot, "echo");
+        subdomain.addBot(bot, "echo2");
+
+        SubdomainEnvironment subdomain2 = environment.getSubdomain("foo2");
+        subdomain2.addBot(bot, "echo");
+        subdomain2.addBot(bot, "echo2");
     }
 
     public static class EchoBot {

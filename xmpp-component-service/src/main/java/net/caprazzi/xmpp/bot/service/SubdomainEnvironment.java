@@ -36,7 +36,6 @@ public class SubdomainEnvironment {
         return bots;
     }
 
-    // TODO: prevent adding of the same bot instance to two subdomains
     public void addBot(Object bot, String node) {
         Preconditions.checkNotNull(bot, "Bot object must not be null.");
         Preconditions.checkNotNull(node, "node must not be null.");

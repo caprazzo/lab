@@ -1,7 +1,26 @@
-## XMPP Component Service
+## Botto - XMPP Bot Service
 
-This is an XMPP Component Service that simplifies the creation of components and component-bot (think bot@component.example.com)
+Botto is a Java framework for easy development on XMPP Bots
 
+Botto has out-of-the-box support for:
+* annotation-only pojo bots
+* multiple bots per instance (bot@example.com)
+* multiple components per instance, each with multiple bots (bot@service.example.com)
+* metrics [todo]
+
+
+    public class EchoBot {
+        @Receive
+        public Message echo(Message msg) {
+            Message reply = new Message();
+            reply.setTo(msg.getFrom());
+            reply.setFrom(msg.getTo());
+            reply.setBody("You said xx: " + msg.getBody());
+            return reply;
+        }
+    }
+
+    environment.getSubdomain("services").addBot(new EchoBot(), "echo");
 
 ### Types of bot output:
 * one packet

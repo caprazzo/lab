@@ -22,11 +22,9 @@ public class EchoBotService extends AbstractBotService {
         SubdomainEnvironment subdomain = environment.getSubdomain("foo");
         EchoBot bot = new EchoBot();
         subdomain.addBot(bot, "echo");
-
     }
 
     public static class EchoBot {
-
         @Receive
         public Message echo(Message msg) {
             Message reply = new Message();
@@ -35,7 +33,5 @@ public class EchoBotService extends AbstractBotService {
             reply.setBody("You said xx: " + msg.getBody());
             return reply;
         }
-
     }
-
 }

@@ -7,12 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.packet.Packet;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Asynchronous executor of Bot receive() methods
+ * TODO: can simply be BotExecutor
  */
 public class ComponentBotExecutor {
 
@@ -30,7 +30,7 @@ public class ComponentBotExecutor {
             return;
         }
 
-        final ListenableFuture response = executorService.submit(new BotReceiveTask(processor, packet));
+        final ListenableFuture<?> response = executorService.submit(new BotReceiveTask(processor, packet));
         Futures.addCallback(response, new FutureCallback<Object>() {
             @Override
             public void onSuccess(Object response) {

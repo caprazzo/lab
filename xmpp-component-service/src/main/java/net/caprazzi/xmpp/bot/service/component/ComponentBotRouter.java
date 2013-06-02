@@ -7,11 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.xmpp.packet.Packet;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The ComponentBotRouter finds subdomain bots for incoming packets and executes
- * the bots using the @ComponentBotExecutor
+ * the bots using a @ComponentBotExecutor
  */
 public class ComponentBotRouter {
 

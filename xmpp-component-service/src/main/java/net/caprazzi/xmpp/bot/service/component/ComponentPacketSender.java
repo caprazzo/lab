@@ -1,15 +1,17 @@
 package net.caprazzi.xmpp.bot.service.component;
 
-import net.caprazzi.xmpp.bot.service.utils.ExecutionUtils;
 import org.jivesoftware.whack.ExternalComponentManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmpp.component.Component;
 import org.xmpp.packet.Packet;
 
-import java.util.List;
 import java.util.concurrent.*;
 
+/**
+ * Sends packets from xmpp components.
+ * Incoming messages are queued up and sent asynchronously.
+ */
 public class ComponentPacketSender {
 
     private final Logger Log = LoggerFactory.getLogger(ComponentPacketSender.class);
@@ -47,17 +49,11 @@ public class ComponentPacketSender {
     }
 
     public void send(Component component, Packet packet) {
-
-        if (executor.isShutdown()) {
-
-        }
-
         try {
             outbox.put(new ComponentPacket(component, packet));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
     }
 
     private static class ComponentPacket {

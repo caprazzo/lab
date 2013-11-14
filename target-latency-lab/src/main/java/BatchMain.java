@@ -1,3 +1,7 @@
+import com.codahale.metrics.ConsoleReporter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -8,12 +12,29 @@ public class BatchMain {
         // start echo batch server
         // start echo batch client
         // start generator
+        final MetricRegistry metrics = new MetricRegistry();
+
+        final ConsoleReporter reporter = ConsoleReporter.forRegistry(metrics)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .build();
+        reporter.start(10, TimeUnit.SECONDS);
+
+        final Timer timer = metrics.timer(MetricRegistry.name(EchoClient.class, "RTT"));
+        final RequestClient client = new RequestClient(new RequestListener() {
+            @Override
+            public void onRequest(Request request) {
+                timer.update(System.nanoTime() - request.getValue(), TimeUnit.NANOSECONDS);
+            }
+        });
+
 
         RequestGenerator generator = new RequestGenerator();
+        client.connect(3333);
         generator.generate(1, TimeUnit.MILLISECONDS, new RequestListener() {
             @Override
             public void onRequest(Request request) {
-                // add messages to queue
+                client.send(request);
             }
         });
     }

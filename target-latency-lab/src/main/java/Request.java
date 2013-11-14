@@ -31,6 +31,13 @@ public class Request {
         protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
             return new Request(buffer.readLong(), buffer.readLong());
         }
+
+        public static ChannelBuffer encode(Request request) {
+            ChannelBuffer buf = ChannelBuffers.buffer(16);
+            buf.writeLong(request.getId());
+            buf.writeLong(request.getValue());
+            return buf;
+        }
     }
 
     @Override
